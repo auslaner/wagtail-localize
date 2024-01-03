@@ -190,6 +190,9 @@ def synchronize_tree(source_locale, target_locale, *, page_index=None):
 
         # Fetch source from database
         model = page.content_type.model_class()
+        if not model:
+            logger.warning(f'Failed to get model for page: {page}\nSkipping...')
+            continue
         source_page = model.objects.get(
             translation_key=page.translation_key, locale=source_locale
         )
